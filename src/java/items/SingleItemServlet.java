@@ -35,6 +35,7 @@ public class SingleItemServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet SingleItemServlet: Shows details of each product</h1>");
+            out.println("<p>Product ID: " + request.getParameter("id") + "</p>");
             out.println("</body>");
             out.println("</html>");
         }
