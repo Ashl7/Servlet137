@@ -36,83 +36,64 @@ public class AllItemsServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    
+    // Array holding all hats in the database
+    private ArrayList<Hat> hatArray = new ArrayList<Hat>();
+    
+    // Loads the data(hats) from database into the hatArray object
+    private void loadData() {
         
-        ArrayList<Hat> hatArray = new ArrayList<Hat>();        
-          
         final String url = "jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp30";
         final String dbname = "inf124grp30";
         final String username = "inf124grp30";
-        final String password = "st#VuY6R";    
+        final String password = "st#VuY6R";   
         
-        String state = "";
-        String city = "";       
-
         Connection connection = null;
         Statement statement = null; 
         ResultSet resultSet = null;
         try {
             // Load the MYSQL JDBC driver.
-            Class.forName("com.mysql.jdbc.Driver"); 
+            Class.forName("com.mysql.jdbc.Driver");             
             
             //Open a connection
-            connection = DriverManager.getConnection(url,username,password);
-            state = connection.toString();
-            if (connection == null) {
-               state = "conn was null";               
-            }
+            connection = DriverManager.getConnection(url,username,password);       
+            
+            //STEP 4: Execute a query
+            statement = connection.createStatement();
+            String sqlQuery;           
+            sqlQuery = "SELECT * FROM hats";
+            resultSet = statement.executeQuery(sqlQuery);           
 
-           //STEP 4: Execute a query
-           statement = connection.createStatement();
-           String sqlQuery;
-           sqlQuery = "SELECT state, city FROM zip_codes";
-           // sqlQuery = "SELECT * FROM hats";
-           resultSet = statement.executeQuery(sqlQuery);           
-           
-           if (resultSet==null) {
-               city = "rs was null";
-           }
-           
-           //STEP 5: Extract data from result set
-           try {
-                while(resultSet.next()) {
-                   //Retrieve by column name 
-                   state = resultSet.getString("state");
-                   city = resultSet.getString("city");
+            //STEP 5: Extract data from result set            
+            while(resultSet.next()) {             
+                Hat hat = new Hat();
 
-                   /*
-                   Hat hat = new Hat();
+                hat.setId(resultSet.getInt("id"));
+                hat.setTitle(resultSet.getString("title"));
+                hat.setType(resultSet.getString("type"));
+                hat.setColor(resultSet.getString("color"));
+                hat.setPrice(resultSet.getInt("price"));
+                hat.setMaterial(resultSet.getString("material"));
+                hat.setImage_url(resultSet.getString("image_url"));
+                hat.setDesc(resultSet.getString("description"));
 
-                   hat.setId(resultSet.getInt("id"));
-                   hat.setTitle(resultSet.getString("title"));
-                   hat.setType(resultSet.getString("type"));
-                   hat.setColor(resultSet.getString("color"));
-                   hat.setPrice(resultSet.getInt("price"));
-                   hat.setMaterial(resultSet.getString("material"));
-                   hat.setImage_url(resultSet.getString("image_url"));
-                   hat.setDesc(resultSet.getString("description"));
-
-                   hatArray.add(hat);        
-                   */
-                }      
-                resultSet.close();
-                statement.close();
-                connection.close();                                   
-            }
-            catch(Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-                processRequest(request, response);
-            }
-        }
-        
+                hatArray.add(hat);   
+             }
+            
+            resultSet.close();
+            statement.close();
+            connection.close();  
+        }        
         catch(Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-                processRequest(request, response);
+            e.printStackTrace();
+            loadData();
         }
-
+    }
+    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {                 
+        
+        loadData();
            
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -124,7 +105,7 @@ public class AllItemsServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet all_items at " + request.getContextPath() + "</h1>");
-            out.println("<p>" + "City oh oh= " + city + " State=" + state + "</p>");
+            out.println("<p>" + "Hat Name= " + hatArray.get(0).getTitle() + "\n color=" + hatArray.get(0).getColor() + "</p>");
             out.println("</body>");
             out.println("</html>");         
             
@@ -168,7 +149,8 @@ public class AllItemsServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet to load up all hats from the database and show them in"
+                + " search page";
     }// </editor-fold>
 
 }
