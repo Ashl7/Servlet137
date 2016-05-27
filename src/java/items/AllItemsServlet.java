@@ -90,28 +90,72 @@ public class AllItemsServlet extends HttpServlet {
         }
     }
     
+    // The content to be shown on the screen when Servlet is loaded
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {                 
         
-        loadData();
-           
+        loadData();           
         response.setContentType("text/html;charset=UTF-8");
+        
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            /* output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet all_items</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet all_items at " + request.getContextPath() + "</h1>");
-            out.println("<p>" + "Hat Name= " + hatArray.get(0).getTitle() + "\n color=" + hatArray.get(0).getColor() + "</p>");
-            out.println("</body>");
-            out.println("</html>");         
+            out.println("<title>Browse Our Collection</title>");  
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/items_style.css\">");
             
-        }
-    
+            // JAVASCRIPT
+            out.println("<script>");
+            out.println("function normalImg(x){");
+            out.println("x.style.height = \"200px\";");
+            out.println("x.style.width = \"200px\";}");
+            out.println("function largeImg(x){");
+            out.println("x.style.height = \"400px\";");
+            out.println("x.style.width = \"400px\";}");
+            out.println("</script>");
+            
+            out.println("</head>");
+            
+            // BODY
+            out.println("<body>");
+            
+            // HEADER
+            out.println(" <div id=\"header\">");
+            out.println("<h1>HatSpace</h1>");
+            out.println("<form>");
+            out.println("<input id=\"search\" type=\"text\" placeholder=\"Search\">");
+            out.println("</form>");
+            out.println("</div>");
+            
+            // ITEMS
+            out.println("<table border=\"1\" style=\"width:100%\">");
+            out.println("<tr>");
+            out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(0).getId() + "\">");
+            out.println("<img src=\"img/hats/" + hatArray.get(0).getImage_url() + "\" alt =\"" + hatArray.get(0).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+            out.println("</a>");
+            out.println("<p>Price: " + hatArray.get(0).getPrice() + "</p>");
+            out.println("<p>Color: " + hatArray.get(0).getColor() + "</p>");
+            out.println("<p>Material: " + hatArray.get(0).getMaterial() + "</p></td>");
+            out.println("");
+
+            
+            
+            
+                    
+       
+            
+            
+            
+            
+            // FOOTER
+            out.println("<div id=\"footer\">");
+            out.println("Copyright © HatSpace.com");
+            out.println("</div> ");            
+         
+        }    
     }
+    
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
