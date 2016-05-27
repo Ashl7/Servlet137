@@ -17,7 +17,9 @@ import java.sql.*;
 
 /**
  *
- * @author neerajkumar
+ * @author Ashl7
+ * 
+ * Ana should implement her part in this Servlet
  */
 public class SingleItemServlet extends HttpServlet {
 
