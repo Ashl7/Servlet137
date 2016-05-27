@@ -129,17 +129,46 @@ public class AllItemsServlet extends HttpServlet {
             out.println("</div>");
             
             // ITEMS
+            //      First row
             out.println("<table border=\"1\" style=\"width:100%\">");
             out.println("<tr>");
-            out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(0).getId() + "\">");
+            out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(0).getId() + "\">");   //**** ANA'S PART ****
             out.println("<img src=\"img/hats/" + hatArray.get(0).getImage_url() + "\" alt =\"" + hatArray.get(0).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
             out.println("</a>");
             out.println("<p>Price: " + hatArray.get(0).getPrice() + "</p>");
             out.println("<p>Color: " + hatArray.get(0).getColor() + "</p>");
             out.println("<p>Material: " + hatArray.get(0).getMaterial() + "</p></td>");
-            out.println("");
-
             
+            out.println("<table border=\"1\" style=\"width:100%\">");
+            out.println("<tr>");
+            out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(1).getId() + "\">");   //**** ANA'S PART ****
+            out.println("<img src=\"img/hats/" + hatArray.get(1).getImage_url() + "\" alt =\"" + hatArray.get(1).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+            out.println("</a>");
+            out.println("<p>Price: " + hatArray.get(1).getPrice() + "</p>");
+            out.println("<p>Color: " + hatArray.get(1).getColor() + "</p>");
+            out.println("<p>Material: " + hatArray.get(1).getMaterial() + "</p></td>");
+            
+            out.println("<table border=\"1\" style=\"width:100%\">");
+            out.println("<tr>");
+            out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(2).getId() + "\">");   //**** ANA'S PART ****
+            out.println("<img src=\"img/hats/" + hatArray.get(2).getImage_url() + "\" alt =\"" + hatArray.get(2).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+            out.println("</a>");
+            out.println("<p>Price: " + hatArray.get(2).getPrice() + "</p>");
+            out.println("<p>Color: " + hatArray.get(2).getColor() + "</p>");
+            out.println("<p>Material: " + hatArray.get(2).getMaterial() + "</p></td>");
+            
+            out.println("<table border=\"1\" style=\"width:100%\">");
+            out.println("<tr>");
+            out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(3).getId() + "\">");   //**** ANA'S PART ****
+            out.println("<img src=\"img/hats/" + hatArray.get(3).getImage_url() + "\" alt =\"" + hatArray.get(3).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+            out.println("</a>");
+            out.println("<p>Price: " + hatArray.get(3).getPrice() + "</p>");
+            out.println("<p>Color: " + hatArray.get(3).getColor() + "</p>");
+            out.println("<p>Material: " + hatArray.get(3).getMaterial() + "</p></td>");
+
+            out.println("</tr>"); 
+            
+            //      Second row
             
             
                     
