@@ -8,6 +8,10 @@
         <servlet-name>SingleItemServlet</servlet-name>
         <servlet-class>items.SingleItemServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RecentVisitServlet</servlet-name>
+        <servlet-class>util.RecentVisitServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
@@ -20,13 +24,16 @@
         <servlet-name>AllItemsServlet</servlet-name>
         <url-pattern>/AllItemsServlet</url-pattern>
     </servlet-mapping>
-
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <servlet-mapping>
         <servlet-name>SingleItemServlet</servlet-name>
         <url-pattern>/SingleItemServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecentVisitServlet</servlet-name>
+        <url-pattern>/RecentVisitServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

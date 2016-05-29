@@ -38,10 +38,12 @@ public class AllItemsServlet extends HttpServlet {
      */
     
     // Array holding all hats in the database
-    private ArrayList<Hat> hatArray = new ArrayList<Hat>();
+    private ArrayList<Hat> hatArray;
     
     // Loads the data(hats) from database into the hatArray object
     private void loadData() {
+        
+        hatArray = new ArrayList<Hat>();
         
         final String url = "jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp30";
         final String dbname = "inf124grp30";
@@ -58,13 +60,13 @@ public class AllItemsServlet extends HttpServlet {
             //Open a connection
             connection = DriverManager.getConnection(url,username,password);       
             
-            //STEP 4: Execute a query
+            // Execute a query
             statement = connection.createStatement();
             String sqlQuery;           
             sqlQuery = "SELECT * FROM hats";
             resultSet = statement.executeQuery(sqlQuery);           
 
-            //STEP 5: Extract data from result set            
+            // Extract data from result set            
             while(resultSet.next()) {             
                 Hat hat = new Hat();
 
