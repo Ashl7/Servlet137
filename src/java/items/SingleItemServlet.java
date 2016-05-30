@@ -16,10 +16,12 @@ import com.mysql.jdbc.Driver;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Arash Nase
+ * @author Arash 
  * 
  * Ana should implement her part in this Servlet
  */
@@ -102,7 +104,15 @@ public class SingleItemServlet extends HttpServlet {
         Integer count = hitCount.get(Integer.valueOf(request.getParameter("id")));
         count++;
         hitCount.put(Integer.valueOf(request.getParameter("id")), count);
-                   
+        
+        
+        // update session variable visited to have this recently visited page in it
+        ArrayList<String> recentPages = null;
+        HttpSession session = request.getSession(false);
+        recentPages = (ArrayList<String>)session.getAttribute("visited");
+        recentPages.add(request.getParameter("id"));
+        session.setAttribute("visited", recentPages);
+        
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -115,9 +125,21 @@ public class SingleItemServlet extends HttpServlet {
             out.println("<h1>Servlet SingleItemServlet: Shows details of each product</h1>");
             out.println("<p>Product ID: " + request.getParameter("id") + "</p>");
             out.println("<p>Hit Counts: " + count + "</p>");
+            
+            if (recentPages.size() > 0) {
+                out.println("<p>in if block </p>");
+                for(int i = recentPages.size()-1; i >= 0; i--) {
+                    out.println("<p>visited ID: " + recentPages.get(i) + "</p>");                        
+                }
+            }
+            else {
+                out.println("<p>in else block </p>");
+            }
+            
             out.println("</body>");
             out.println("</html>");
         }
+
     }
 
     
