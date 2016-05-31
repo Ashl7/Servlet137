@@ -106,14 +106,13 @@ public class AllItemsServlet extends HttpServlet {
         // load the database into servlet
         loadData();           
         
-        // make a new session and 
+        // make a new session 
         ArrayList<String> recentPages = null;
         HttpSession session = request.getSession(true);
         // add attributes to the newly created session
         if(session.isNew()) {                            
             session.setAttribute("visited", new ArrayList<String>());
             session.setAttribute("id_image", id_image);
-            //session.setAttribute("recentServletVisited",)
         }
 
         response.setContentType("text/html;charset=UTF-8");
@@ -249,7 +248,8 @@ public class AllItemsServlet extends HttpServlet {
             out.println("</tr>"); 
             
             out.println("</table>");                 
-          
+            
+            // Get the info from RecentVisitServlet and include it in output
             String recentVisitURL = "/RecentVisitServlet";
             RequestDispatcher rd = request.getRequestDispatcher(recentVisitURL);
             rd.include(request, response);        

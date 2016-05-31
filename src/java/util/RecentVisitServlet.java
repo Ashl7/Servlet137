@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Arash
+ * Generates the last 5 visited items and send it to AllitemServlet
  */
 public class RecentVisitServlet extends HttpServlet {
 
@@ -39,7 +40,7 @@ public class RecentVisitServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {    
       
-      
+        // get the current session and load the visited webpages and their images
         ArrayList<String> recentPages = null;
         HashMap<Integer,String> id_image = null;
         HttpSession session = request.getSession(false);
@@ -58,8 +59,8 @@ public class RecentVisitServlet extends HttpServlet {
               out.println("<tr>");
               if (recentPages != null) {          
                   if (recentPages.size() > 0) {
-                      out.println("<p>in if block </p>");
                       int counter = 0;
+                      // output the last five visited items 
                       for(int i = recentPages.size()-1; i >= 0; i--) {
                           if (counter > 4) {
                               break;
@@ -70,14 +71,9 @@ public class RecentVisitServlet extends HttpServlet {
                           counter++;
                       }
                   }
-                  else {
-                      out.println("<p>in else block </p>");
-                  }
               }
-
               out.println("</tr>");
               out.println("</table>");  
-              out.println("<p>Session ID: " + session.getId() + "</p>"); 
 
               // FOOTER
               out.println("<div id=\"footer\">");
@@ -123,7 +119,7 @@ public class RecentVisitServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Generates the last 5 visited items and send it to AllitemServlet";
     }// </editor-fold>
 
 }
