@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,31 +37,54 @@ public class RecentVisitServlet extends HttpServlet {
             
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+            throws ServletException, IOException {    
       
-      // Create a session object if it is already not  created.
-      HttpSession session = request.getSession(true);      
-      session.setAttribute("visited", new ArrayList<String>());
-
       
-      response.setContentType("text/html");
-      PrintWriter out = response.getWriter();
-
-      String docType =
-      "<!doctype html public \"-//w3c//dtd html 4.0 " +
-      "transitional//en\">\n";
-      out.println(docType +
-                "<html>\n" +
-                "<head><title></title></head>\n" +
-                "<body bgcolor=\"#f0f0f0\">\n" +
-                "<h1 align=\"center\">" + session.getId() + "</h1>\n" +
-                "</body></html>");    
+        ArrayList<String> recentPages = null;
+        HashMap<Integer,String> id_image = null;
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            recentPages = (ArrayList<String>)session.getAttribute("visited");
+            id_image = (HashMap<Integer,String>)session.getAttribute("id_image");
+        }
       
+        response.setContentType("text/html");     
+     
+        try (PrintWriter out = response.getWriter()) {
+              // Recently Visted Items
+              out.println(" <hr>"); 
+              out.println("<p style=\"text-align: center\">Recently Visited Items</p>");
+              out.println("<table id=\"visited\" border=\"1\">   ");
+              out.println("<tr>");
+              if (recentPages != null) {          
+                  if (recentPages.size() > 0) {
+                      out.println("<p>in if block </p>");
+                      int counter = 0;
+                      for(int i = recentPages.size()-1; i >= 0; i--) {
+                          if (counter > 4) {
+                              break;
+                          }
+                          out.println("<td><a href=\"SingleItemServlet?id=" + recentPages.get(i) + "\">");                            
+                          out.println("<img src=\"img/hats/" + id_image.get(Integer.valueOf(recentPages.get(i))) + "\" alt =\"" + id_image.get(Integer.valueOf(recentPages.get(i))) +"\" align = \"middle\" height=\"100\" weight = \"100\"></a>");
+                          out.println("</td>");
+                          counter++;
+                      }
+                  }
+                  else {
+                      out.println("<p>in else block </p>");
+                  }
+              }
 
-      String url = "/AllItemsServlet";
-      RequestDispatcher rd = request.getRequestDispatcher(url);
-      rd.forward(request, response);
+              out.println("</tr>");
+              out.println("</table>");  
+              out.println("<p>Session ID: " + session.getId() + "</p>"); 
+
+              // FOOTER
+              out.println("<div id=\"footer\">");
+              out.println("Copyright © HatSpace.com");
+              out.println("</div> ");
+                
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

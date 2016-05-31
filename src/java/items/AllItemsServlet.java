@@ -106,18 +106,16 @@ public class AllItemsServlet extends HttpServlet {
         // load the database into servlet
         loadData();           
         
-        // load the recently visited items from the session
+        // make a new session and 
         ArrayList<String> recentPages = null;
-        HttpSession session = request.getSession();
-        recentPages = (ArrayList<String>)session.getAttribute("visited");     
-        
-        
-        /*
-        String recentVisitURL = "/RecentVisitServlet";
-        RequestDispatcher rd = request.getRequestDispatcher(recentVisitURL);
-        rd.forward(request, response);
-        */
-        
+        HttpSession session = request.getSession(true);
+        // add attributes to the newly created session
+        if(session.isNew()) {                            
+            session.setAttribute("visited", new ArrayList<String>());
+            session.setAttribute("id_image", id_image);
+            //session.setAttribute("recentServletVisited",)
+        }
+
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
@@ -250,42 +248,14 @@ public class AllItemsServlet extends HttpServlet {
 
             out.println("</tr>"); 
             
-            out.println("</table>");
+            out.println("</table>");                 
+          
+            String recentVisitURL = "/RecentVisitServlet";
+            RequestDispatcher rd = request.getRequestDispatcher(recentVisitURL);
+            rd.include(request, response);        
             
-            // Recently Visted Items
-            out.println(" <hr>"); 
-            out.println("<p style=\"text-align: center\">Recently Visited Items</p>");
-            out.println("<table id=\"visited\" border=\"1\">   ");
-            out.println("<tr>");
-            if (recentPages != null) {          
-                if (recentPages.size() > 0) {
-                    out.println("<p>in if block </p>");
-                    int counter = 0;
-                    for(int i = recentPages.size()-1; i >= 0; i--) {
-                        if (counter > 4) {
-                            break;
-                        }
-                        out.println("<td><a href=\"SingleItemServlet?id=" + recentPages.get(i) + "\">");                            
-                        out.println("<img src=\"img/hats/" + id_image.get(Integer.valueOf(recentPages.get(i))) + "\" alt =\"" + id_image.get(Integer.valueOf(recentPages.get(i))) +"\" align = \"middle\" height=\"100\" weight = \"100\"></a>");
-                        out.println("</td>");
-                        counter++;
-                    }
-                }
-                else {
-                    out.println("<p>in else block </p>");
-                }
-            }
-            
-            out.println("</tr>");
-            out.println("</table>");  
-            out.println("<p>Session ID: " + session.getId() + "</p>"); 
-            
-            // FOOTER
-            out.println("<div id=\"footer\">");
-            out.println("Copyright © HatSpace.com");
-            out.println("</div> ");           
-        
-        }    
+
+        }
     }
     
     
