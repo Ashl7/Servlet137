@@ -118,6 +118,21 @@ public class SingleItemServlet extends HttpServlet {
         recentPages.add(request.getParameter("id"));
         session.setAttribute("visited", recentPages);
         
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = "", image = "", color = "", material = "", description = "";
+        int price = 0;
+        
+        for(Hat item : hatArray){
+            if(item.getId() == id){
+                name = item.getTitle();
+                image = item.getImage_url();
+                color = item.getColor();
+                material = item.getMaterial();
+                description = item.getDesc();
+                price = item.getPrice();
+            }
+        }
+        
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -143,7 +158,31 @@ public class SingleItemServlet extends HttpServlet {
                 out.println("<p>in else block </p>");
             }
             
+            out.println("<div>");
+            out.println("<div id=\"header\">");
+            out.println("<h1>HatSpace</h1>");
+            out.println("<form>");
+            out.println("<input id=\"search\" type=\"text\" placeholder=\"Search\">");
+            out.println(" </form>");
+            out.println("</div> ");
+            out.println("<img id=\"image\" src=\"../img/hats/" + image + "\" alt=\"Armenian Bucket\">");
+            out.println(" <div>");
+            out.println("<ul>");
+            out.println("<li>Name: " + name + "</li>");
+            out.println("<li>Color: " + color + "</li>");
+            out.println("<li>Material: " + material + "</li>");
+            out.println("<li>Price: $" + price + "</li>");
+            out.println("</ul>");
+            out.println("</div>");
+            out.println("<div class =\"description\"> ");
+            out.println(description);
+            out.println(" </div>");
+            out.println("</div>");
             
+            out.println("<button type=\"button\" >Add to Cart</button>");
+            
+            out.println("</body>");
+            out.println("</html>");
         }
 
     }
@@ -153,7 +192,7 @@ public class SingleItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+        /*
         int id = Integer.parseInt(request.getParameter("id"));
         String name = "", image = "", color = "", material = "", description = "";
         int price = 0;
@@ -197,6 +236,7 @@ public class SingleItemServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
+                */
     }
 
    
