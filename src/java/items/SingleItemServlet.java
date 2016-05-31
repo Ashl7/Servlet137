@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
+import util.ServletSessionCounter;
 
 /**
  *
@@ -105,6 +106,10 @@ public class SingleItemServlet extends HttpServlet {
         count++;
         hitCount.put(Integer.valueOf(request.getParameter("id")), count);
         
+        //Counting the number of viewers(active session)
+        ServletSessionCounter ssc = new ServletSessionCounter();
+        int sessionCount = ssc.getActiveSession();
+        
         
         // update session variable visited to have this recently visited page in it
         ArrayList<String> recentPages = null;
@@ -126,6 +131,7 @@ public class SingleItemServlet extends HttpServlet {
             out.println("<h1>Servlet SingleItemServlet: Shows details of each product</h1>");
             out.println("<p>Product ID: " + request.getParameter("id") + "</p>");
             out.println("<p>Hit Counts: " + count + "</p>");
+            out.println(("<p>Current Viewer Counts: " +  sessionCount + "</p>"));
             
             if (recentPages.size() > 0) {
                 out.println("<p>in if block </p>");

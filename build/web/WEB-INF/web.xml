@@ -35,6 +35,11 @@
         <servlet-name>RecentVisitServlet</servlet-name>
         <url-pattern>/RecentVisitServlet</url-pattern>
     </servlet-mapping>
+    
+    <listener>
+           <listener-class>util.ServletSessionCounter</listener-class>
+    </listener>
+
     <session-config>
         <session-timeout>
             30
