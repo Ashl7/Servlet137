@@ -179,7 +179,10 @@ public class SingleItemServlet extends HttpServlet {
             out.println(" </div>");
             out.println("</div>");
             
-            out.println("<button type=\"button\" >Add to Cart</button>");
+            out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
+            out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
+            out.println("<button type=\"submit\" >Add to Cart</button>");
+            out.println("</form>");
             
             out.println("</body>");
             out.println("</html>");
@@ -231,6 +234,7 @@ public class SingleItemServlet extends HttpServlet {
             out.println(" </div>");
             out.println("</div>");
             
+        
             out.println("<button type=\"button\" >Add to Cart</button>");
             
             out.println("</body>");
