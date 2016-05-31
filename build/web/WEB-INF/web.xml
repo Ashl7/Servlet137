@@ -12,6 +12,14 @@
         <servlet-name>RecentVisitServlet</servlet-name>
         <servlet-class>util.RecentVisitServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DisplayOrderServlet</servlet-name>
+        <servlet-class>items.DisplayOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubmitOrderServlet</servlet-name>
+        <servlet-class>items.SubmitOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
@@ -35,11 +43,17 @@
         <servlet-name>RecentVisitServlet</servlet-name>
         <url-pattern>/RecentVisitServlet</url-pattern>
     </servlet-mapping>
-    
     <listener>
-           <listener-class>util.ServletSessionCounter</listener-class>
+        <listener-class>util.ServletSessionCounter</listener-class>
     </listener>
-
+    <servlet-mapping>
+        <servlet-name>DisplayOrderServlet</servlet-name>
+        <url-pattern>/DisplayOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubmitOrderServlet</servlet-name>
+        <url-pattern>/SubmitOrderServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
