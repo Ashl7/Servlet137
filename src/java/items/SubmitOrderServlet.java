@@ -10,12 +10,17 @@ package items;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +42,7 @@ public class SubmitOrderServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
+    private ShoppingCart cart;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,25 +61,76 @@ public class SubmitOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         
-        Connection connection = null;
-        Statement statement = null; 
-        ResultSet resultSet = null;
-        String     sqlStr = null;
+        final String url = "jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp30";
+        final String dbname = "inf124grp30";
+        final String username = "inf124grp30";
+        final String password = "st#VuY6R";   
+        
         HttpSession session = request.getSession(true);
+        cart = (ShoppingCart) session.getAttribute("ShoppingCart");
+        HashMap<Integer, Integer> usable = cart.getItems();
+        
+        
         //try to submit the order info into database
-        String firstname = request.getParameter("FirstNameField");
-        String lastname = request.getParameter("LastNameField");
-        String phonenumber = request.getParameter("PhoneNumberField");
-        String streetaddress = request.getParameter("ShippingAddressField");
-        String city = request.getParameter("CityField");
-        String state = request.getParameter("StateField");
-        String zipcode = request.getParameter("ZipCodeField");
-        String ccnumber = request.getParameter("CreditCardNumberField");
-        String ccname = request.getParameter("CreditCardNameField");
-        String expmonth = request.getParameter("ExpMonthField");
-        String expyear = request.getParameter("ExpYearField");
-        String shippingmethod = request.getParameter("Shipping");
+        String firstname = request.getParameter("FirstNameField").trim();
+        String lastname = request.getParameter("LastNameField").trim();
+        String phonenumber = request.getParameter("PhoneNumberField").trim();
+        String streetaddress = request.getParameter("ShippingAddressField").trim();
+        String city = request.getParameter("CityField").trim();
+        String state = request.getParameter("StateField").trim();
+        String zipcode = request.getParameter("ZipCodeField").trim();
+        String ccnumber = request.getParameter("CreditCardNumberField").trim();
+        String ccname = request.getParameter("CreditCardNameField").trim();
+        String expmonth = request.getParameter("ExpMonthField").trim();
+        String expyear = request.getParameter("ExpYearField").trim();
+        String shippingmethod = request.getParameter("Shipping").trim();
+        String email = request.getParameter("EmailAddressField").trim();
+        
+        
+        try {
+            // Load the MYSQL JDBC driver.
+            Class.forName("com.mysql.jdbc.Driver");             
+            
+            //Open a connection
+            Connection connection = DriverManager.getConnection(url,username,password);       
+            
+            // Execute a query
+            
+            
+            String sqlOrder = "INSERT INTO orders(first_name, last_name, phone, address, city, state, zip, card, name_on_card, month, year, shipping, email) VALUES("
+                    + firstname + ", " + lastname + ", " + phonenumber + ", " + streetaddress + ", " + city + ", " + state + ", " + zipcode + ", " + ccnumber 
+                    + ", " + ccname + ", " + expmonth + ", " + expyear + ", " + shippingmethod + ", " + email + ")";
+            
+            PreparedStatement statement = connection.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+            
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            Integer amount = resultSet.getInt(1);
+            session.setAttribute("OrderID", amount);
+            String sqlOrder2;
+            for (Map.Entry<Integer, Integer> entry : usable.entrySet()) {
+                sqlOrder2 = "INSERT INTO item_in_cart(hatID, amount, orderID) VALUES("
+                        + entry.getKey().toString() + ", " + entry.getValue().toString() + ", "
+                        + amount.toString() + ")";
+                
+                statement.executeUpdate(sqlOrder2);
+    }
+            resultSet.close();
+            statement.close();
+            connection.close();  
+        }        
+        catch(Exception e) {
+            e.printStackTrace();
+
+        }
+        
+        
+        RequestDispatcher rs = request.getRequestDispatcher("order_details.jsp");
+        rs.forward(request, response);
         
         
     }

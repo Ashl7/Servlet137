@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ public class DisplayOrderServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    private HashMap<Integer,Integer> shopping_cart;
+    private ShoppingCart cart;
     private ArrayList<Hat> hatArray;
     
     private void loadData() {
@@ -80,7 +81,7 @@ public class DisplayOrderServlet extends HttpServlet {
 
                 hatArray.add(hat);   
                 
-             }
+            }
             
             resultSet.close();
             statement.close();
@@ -106,8 +107,15 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("<title>Check Out Page</title>");
             
             //Javascript CheckOrder function
-            /*
+            
             out.println("<script type='text/javascript'>");
+            out.println("function normalImg(x){");
+            out.println("x.style.height = \"200px\";");
+            out.println("x.style.width = \"200px\";}");
+            out.println("function largeImg(x){");
+            out.println("x.style.height = \"400px\";");
+            out.println("x.style.width = \"400px\";}");
+            
             out.println("function CheckOrder() { ");
                 out.println("var HatID = document.OrderForm.HatID.value;");
                 out.println("var QuantityOrdered = document.OrderForm.QuantityField.value;");
@@ -147,11 +155,11 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("alert ('Phone number must be 10 digits long. Example: 1234567890');");
                     out.println("return false;");
                 out.println("}");
-                out.println("else if(!/^[A-z]+$/.test(City)) {");
+                out.println("else if(!/^[a-zA-Z\\s]/.test(City)) {");
                     out.println("alert ('Non-alphabetic characters not allowed in City field')");
                     out.println("return false;");
                 out.println("}");
-                out.println("else if(!/^[A-z]+$/.test(State)) {");
+                out.println("else if(!/^[a-zA-Z\\s]/.test(State)) {");
                     out.println("alert ('Non-alphabetic characters not allowed in State field');");
                     out.println("return false;");
                 out.println("}");
@@ -163,7 +171,7 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("alert ('Credit Card number must contain only numbers');");
                     out.println("return false;");
                 out.println("}");
-                out.println("else if(!/^[A-z]+$/.test(CCName)) {");
+                out.println("else if(!/^[a-zA-Z\\s]/+.test(CCName)) {");
                     out.println("alert ('Non-alphabetic characters not allowed in Credit Card Name field');");
                     out.println("return false;");
                 out.println("}");
@@ -172,23 +180,167 @@ public class DisplayOrderServlet extends HttpServlet {
                 out.println("return true;");
                 out.println("}");
             out.println("</script>");
-            */
             
-            out.println("<link rel='stylesheet' type='text/css' href='../css/item_description.css'>");
+            
+            out.println("<link rel='stylesheet' type='text/css' href='../css/display_order.css'>");
             out.println("</head>");
             
-           
-            
-            shopping_cart = (HashMap)request.getSession().getAttribute("cart");
-            
-            
-            //display all the shopping cart stuff here
-            
-            
-            
-            
-            //form element
             out.println("<body>");
+            
+            out.println("<table id=\"cartcontent\">");
+            cart = (ShoppingCart) session.getAttribute("ShoppingCart");
+            Integer quantity = 0;
+            Integer total_price = 0;
+            HashMap<Integer, Integer> usable = cart.getItems();
+            for (Map.Entry<Integer, Integer> entry : usable.entrySet()) {
+                //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                if(entry.getKey() == 1)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(0).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(0).getImage_url() + "\" alt =\"" + hatArray.get(0).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(0).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(0).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 2)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(1).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(1).getImage_url() + "\" alt =\"" + hatArray.get(1).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(1).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(1).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 3)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(2).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(2).getImage_url() + "\" alt =\"" + hatArray.get(2).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(2).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(2).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 4)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(3).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(3).getImage_url() + "\" alt =\"" + hatArray.get(3).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(3).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(3).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 5)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(4).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(4).getImage_url() + "\" alt =\"" + hatArray.get(4).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(4).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(4).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 6)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(5).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(5).getImage_url() + "\" alt =\"" + hatArray.get(5).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(5).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(5).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 7)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(6).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(6).getImage_url() + "\" alt =\"" + hatArray.get(6).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(6).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(6).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 8)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(7).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(7).getImage_url() + "\" alt =\"" + hatArray.get(7).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(7).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(7).getPrice() * quantity);
+                }else if(entry.getKey() == 9)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(8).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(8).getImage_url() + "\" alt =\"" + hatArray.get(8).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(8).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(8).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 10)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(9).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(9).getImage_url() + "\" alt =\"" + hatArray.get(9).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(9).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(9).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 11)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(10).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(10).getImage_url() + "\" alt =\"" + hatArray.get(10).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(10).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(10).getPrice() * quantity);
+                }
+                else if(entry.getKey() == 12)
+                {
+                    quantity = entry.getValue();
+                    out.println("<tr>");
+                    out.println("<td><a href=\"SingleItemServlet?id=" + hatArray.get(11).getId() + "\">");
+                    out.println("<img src=\"img/hats/" + hatArray.get(11).getImage_url() + "\" alt =\"" + hatArray.get(11).getTitle() + "\" align = \"middle\" height=\"200\" weight = \"200\" onmouseover = \"largeImg(this)\" onmouseout = \"normalImg(this)\">");
+                    out.println("</a>");
+                    out.println("<p>Price per hat: " + hatArray.get(11).getPrice() + "</p>");
+                    out.println("<p>Quantity in Cart: " + quantity.toString() + "</p>");
+                    out.println("</tr>");
+                    total_price += (hatArray.get(11).getPrice() * quantity);
+                }
+            }
+            out.println("</table>");    
+            
+            //form here
             out.println("<div id ='form'>");
             out.println("<form name = 'OrderForm' method='POST' onsubmit='CheckOrder();' action='SubmitOrderServlet'>");
             out.println("<div class='left'>");
@@ -200,15 +352,22 @@ public class DisplayOrderServlet extends HttpServlet {
                 out.println("<div class='left'>");
                     out.println("Last Name: ");
                 out.println("</div>");
-                
                 out.println("<div class='right'>");
                     out.println("<input id='LastName' type='text' name='LastNameField' required/><br />");
                 out.println("</div>");
                 out.println("<div class='left'>");
+                    out.println("Email: ");
+                out.println("</div>");
+                
+                out.println("<div class='right'>");
+                    out.println("<input id='EmailAddress' type='text' name='EmailAddressField' required/><br />");
+                out.println("</div>");
+                out.println("<div class='left'>");
                     out.println("Phone Number: ");
                 out.println("</div>");
+                
                 out.println("<div class='right'>");
-                    out.println("<input id='PhoneNumber' type='text' name='PhoneNumberField' maxlength='10' value='XXXXXXXXXX' required/><br />");
+                    out.println("<input id='PhoneNumber' type='text' name='PhoneNumberField' maxlength='10' value='##########' required/><br />");
                 out.println("</div>");
                 out.println("<div class='left'>");
                     out.println("Address: ");
@@ -290,9 +449,9 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("<input type='radio' name='Shipping' value='6 Days Ground' />6 Days Ground<br />");
                 out.println("</div>");
                 out.println("<div class='left'>");
-                    out.println("<input type='submit' value='Submit Email' />");
+                    out.println("<input type='submit' value='Submit Email' /><input type=\"reset\" value=\"Reset!\">");
                 out.println("</div>");
-                    
+                
             out.println("</form>");
             out.println("</div>");
             out.println("</body>");
