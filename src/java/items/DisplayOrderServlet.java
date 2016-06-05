@@ -190,7 +190,7 @@ public class DisplayOrderServlet extends HttpServlet {
             
             out.println("<table id=\"cartcontent\">");
             cart = (ShoppingCart) session.getAttribute("ShoppingCart");
-            Integer quantity = 0;
+            Integer quantity;
             Integer total_price = 0;
             HashMap<Integer, Integer> usable = cart.getItems();
             for (Map.Entry<Integer, Integer> entry : usable.entrySet()) {

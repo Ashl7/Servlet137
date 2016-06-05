@@ -1,0 +1,40 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 4, 2016, 5:07:16 PM
+    Author     : Yuki
+*/
+*{
+    font-family: 'Book Antiqua';
+    font-size: 100%;
+}
+#cartcontent {
+    width:100%;
+    height: 400px;
+    border: 1px;
+}
+body {
+  background: #fff;
+}
+
+.left {
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 110px;
+    text-align: left;
+}
+
+.right {
+    display: inline-block;
+    float: left;
+    text-align: left;
+}
+
+#form {
+    position: relative;
+    float: none;
+}
