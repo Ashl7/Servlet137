@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.mysql.jdbc.Driver;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -337,6 +338,10 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("</tr>");
                     total_price += (hatArray.get(11).getPrice() * quantity);
                 }
+                out.println("<tr>");
+                out.println("<p> Total Price in Cart: " + total_price.toString() + "</p>");
+                out.println("</tr>");
+                
             }
             out.println("</table>");    
             
