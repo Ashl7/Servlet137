@@ -52,6 +52,8 @@ public class DisplayOrderServlet extends HttpServlet {
         final String username = "inf124grp30";
         final String password = "st#VuY6R";   
         
+        hatArray = new ArrayList<Hat>();
+        
         Connection connection = null;
         Statement statement = null; 
         ResultSet resultSet = null;
@@ -99,6 +101,7 @@ public class DisplayOrderServlet extends HttpServlet {
         loadData();
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
+        cart = new ShoppingCart();
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -107,8 +110,9 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
             out.println("<title>Check Out Page</title>");
             
-            //Javascript CheckOrder function
+            //Javascript Section
             
+            //Javascript function for mouseover image enlargement
             out.println("<script type='text/javascript'>");
             out.println("function normalImg(x){");
             out.println("x.style.height = \"200px\";");
@@ -117,6 +121,7 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("x.style.height = \"400px\";");
             out.println("x.style.width = \"400px\";}");
             
+            //CheckOrder function for validation of input from OrderForm
             out.println("function CheckOrder() { ");
                 out.println("var FirstName = document.OrderForm.FirstNameField.value;");
                 out.println("var LastName = document.OrderForm.LastNameField.value;");
@@ -176,17 +181,19 @@ public class DisplayOrderServlet extends HttpServlet {
                 out.println("}");
             out.println("</script>");
             
-            
+            //linking to display_order.css for styling elements of page
             out.println("<link rel='stylesheet' type='text/css' href='../css/display_order.css'>");
             out.println("</head>");
             
             out.println("<body>");
             
             out.println("<table id=\"cartcontent\">");
+            //grabbing the cart object through session object
             cart = (ShoppingCart) session.getAttribute("ShoppingCart");
             Integer quantity;
             Integer total_price = 0;
             HashMap<Integer, Integer> usable = cart.getItems();
+            //iterate through cart contents and display correct items depending on hatID
             for (Map.Entry<Integer, Integer> entry : usable.entrySet()) {
                 //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
                 if(entry.getKey() == 1)
@@ -444,7 +451,7 @@ public class DisplayOrderServlet extends HttpServlet {
                 out.println("</div>");
                 out.println("<div class='right'>");
                     out.println("<input type='radio' name='Shipping' value='Overnight'/>Overnight<br />");
-                    out.println("<input type='radio' name='Shipping'value='2 Days Air' />2 Days Air<br />");
+                    out.println("<input type='radio' name='Shipping' value='2 Days Air' />2 Days Air<br />");
                     out.println("<input type='radio' name='Shipping' value='6 Days Ground' />6 Days Ground<br />");
                 out.println("</div>");
                 out.println("<div class='left'>");
