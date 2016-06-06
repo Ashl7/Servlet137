@@ -109,13 +109,13 @@ public class SubmitOrderServlet extends HttpServlet {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            Integer amount = resultSet.getInt(1);
-            session.setAttribute("OrderID", amount);
+            Integer orderID = resultSet.getInt(1);
+            session.setAttribute("OrderID", orderID);
             String sqlOrder2;
             for (Map.Entry<Integer, Integer> entry : usable.entrySet()) {
                 sqlOrder2 = "INSERT INTO item_in_cart(hatID, amount, orderID) VALUES("
                         + entry.getKey().toString() + ", " + entry.getValue().toString() + ", "
-                        + amount.toString() + ")";
+                        + orderID.toString() + ")";
                 
                 statement.executeUpdate(sqlOrder2);
     }
@@ -129,7 +129,7 @@ public class SubmitOrderServlet extends HttpServlet {
         }
         
         
-        RequestDispatcher rs = request.getRequestDispatcher("order_details.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("confirmation.jsp");
         rs.forward(request, response);
         
         
