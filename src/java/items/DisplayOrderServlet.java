@@ -101,6 +101,7 @@ public class DisplayOrderServlet extends HttpServlet {
         loadData();
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
+        cart = new ShoppingCart();
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
