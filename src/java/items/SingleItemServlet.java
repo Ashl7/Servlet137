@@ -139,7 +139,8 @@ public class SingleItemServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SingleItemServlet</title>");            
+            out.println("<title>Servlet SingleItemServlet</title>");  
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"../css/item_description.css\">");
             out.println("</head>");
             out.println("<body>");
             out.println("<p><a href=\"/e-commerce_servlet/AllItemsServlet\">Go back</p>");
