@@ -154,6 +154,12 @@ public class SingleItemServlet extends HttpServlet {
             out.println("</form>");
             out.println("</div>");
             
+            
+            // counters
+            out.println("<p>Hit count: " + hitCount + "</p>");
+            out.println("<p>Number of Viewrs: " + sessionCount + "</p>");
+            
+            // item desc.
             out.println("<img src=\"img/hats/" + image + "\" alt =\"" + name + "\"/>");
             out.println("<div>");
             out.println("<ul>");
