@@ -148,6 +148,11 @@ public class AllItemsServlet extends HttpServlet {
             out.println("</form>");
             out.println("</div>");
             
+            
+            out.println("<form method=\"get\" action=\"SubmitOrderServlet\">");
+            out.println("<button type=\"submit\">Check Out Cart</button>");
+            out.println("</form>");
+            
             // ITEMS
             out.println("<table id=\"items\">");
             //      First row
@@ -247,11 +252,7 @@ public class AllItemsServlet extends HttpServlet {
 
             out.println("</tr>"); 
             
-            out.println("</table>");  
-            
-            out.println("<form method=\"get\" action=\"SubmitOrderServlet\">");
-            out.println("<button type=\"submit\">Check Out Cart</button>");
-            out.println("</form>");
+            out.println("</table>");            
             
             // Get the info from RecentVisitServlet and include it in output
             String recentVisitURL = "/RecentVisitServlet";
