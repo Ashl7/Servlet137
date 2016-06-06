@@ -136,49 +136,46 @@ public class SingleItemServlet extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SingleItemServlet</title>");  
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"../css/item_description.css\">");
-            out.println("</head>");
+            out.println("<title>Browse Our Collection</title>");  
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/item_description.css\">");
+            
+            // BODY
             out.println("<body>");
-            out.println("<p><a href=\"/e-commerce_servlet/AllItemsServlet\">Go back</p>");
-            out.println("<h1>Servlet SingleItemServlet: Shows details of each product</h1>");
-            out.println("<p>Product ID: " + request.getParameter("id") + "</p>");
-            out.println("<p>Hit Counts: " + count + "</p>");
-            out.println(("<p>Current Viewer Counts: " +  sessionCount + "</p>"));
             
-            if (recentPages.size() > 0) {
-                out.println("<p>in if block </p>");
-                for(int i = recentPages.size()-1; i >= 0; i--) {
-                    out.println("<p>visited ID: " + recentPages.get(i) + "</p>");                        
-                }
-            }
-            else {
-                out.println("<p>in else block </p>");
-            }
-            
-            out.println("<div>");
-            out.println("<div id=\"header\">");
+            // HEADER
+            out.println(" <div id=\"header\">");
             out.println("<h1>HatSpace</h1>");
             out.println("<form>");
             out.println("<input id=\"search\" type=\"text\" placeholder=\"Search\">");
-            out.println(" </form>");
-            out.println("</div> ");
-            out.println("<img id=\"image\" src=\"../img/hats/" + image + "\" alt=\"Armenian Bucket\">");
-            out.println(" <div>");
+            out.println("</form>");
+            out.println("</div>");
+            
+            out.println("<img src=\"img/hats/" + image + "\" alt =\"" + name + "\"/>");
+            out.println("<div>");
             out.println("<ul>");
-            out.println("<li>Name: " + name + "</li>");
-            out.println("<li>Color: " + color + "</li>");
-            out.println("<li>Material: " + material + "</li>");
-            out.println("<li>Price: $" + price + "</li>");
-            out.println("</ul>");
+            out.println("<li>Name: "+name + "</li>");
+            out.println("<li>Color:"+ color +"</li>");
+            out.println("<li>Material:"+ material +"</li>");
+            out.println("<li>Price:"+ price +"</li>");
+            out.println(" </ul>");
             out.println("</div>");
-            out.println("<div class =\"description\"> ");
+            out.println("<div class =\"description\">");
             out.println(description);
-            out.println(" </div>");
             out.println("</div>");
+            out.println("</div>");
+   
+                     
+            
+            
+            // Check out 
+            out.println("<div>");
+            out.println("<form method=\"get\" action=\"SubmitOrderServlet\">");
+            out.println("<button type=\"submit\">Check Out Cart</button>");
+            out.println("</form>");
             
             out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
             out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
@@ -189,6 +186,13 @@ public class SingleItemServlet extends HttpServlet {
             out.println("</form>");
             out.println("</body>");
             out.println("</html>");
+            out.println("</div>");
+            
+            
+            // FOOTER
+            out.println("<div id=\"footer\">");
+            out.println("Copyright © HatSpace.com");
+            out.println("</div> ");
         }
 
     }
@@ -198,52 +202,6 @@ public class SingleItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        /*
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = "", image = "", color = "", material = "", description = "";
-        int price = 0;
-        
-        for(Hat item : hatArray){
-            if(item.getId() == id){
-                name = item.getTitle();
-                image = item.getImage_url();
-                color = item.getColor();
-                material = item.getMaterial();
-                description = item.getDesc();
-                price = item.getPrice();
-            }
-        }
-        
-        try (PrintWriter out = response.getWriter()) {
-            
-            out.println("<div>");
-            out.println("<div id=\"header\">");
-            out.println("<h1>HatSpace</h1>");
-            out.println("<form>");
-            out.println("<input id=\"search\" type=\"text\" placeholder=\"Search\">");
-            out.println(" </form>");
-            out.println("</div> ");
-            out.println("<img id=\"image\" src=\"../img/hats/" + image + "\" alt=\"Armenian Bucket\">");
-            out.println(" <div>");
-            out.println("<ul>");
-            out.println("<li>Name: " + name + "</li>");
-            out.println("<li>Color: " + color + "</li>");
-            out.println("<li>Material: " + material + "</li>");
-            out.println("<li>Price: $" + price + "</li>");
-            out.println("</ul>");
-            out.println("</div>");
-            out.println("<div class =\"description\"> ");
-            out.println(description);
-            out.println(" </div>");
-            out.println("</div>");
-            
-        
-            out.println("<button type=\"button\" >Add to Cart</button>");
-            
-            out.println("</body>");
-            out.println("</html>");
-        }
-                */
     }
 
    
