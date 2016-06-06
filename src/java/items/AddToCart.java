@@ -32,6 +32,8 @@ public class AddToCart extends HttpServlet{
         }
 
         cart.addItem(id, 1);
+        String referer = request.getHeader("Referer");
+        response.sendRedirect(referer);
     }
     
 }
