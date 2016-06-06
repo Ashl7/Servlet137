@@ -118,8 +118,6 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("x.style.width = \"400px\";}");
             
             out.println("function CheckOrder() { ");
-                out.println("var HatID = document.OrderForm.HatID.value;");
-                out.println("var QuantityOrdered = document.OrderForm.QuantityField.value;");
                 out.println("var FirstName = document.OrderForm.FirstNameField.value;");
                 out.println("var LastName = document.OrderForm.LastNameField.value;");
                 out.println("var PhoneNumber = document.OrderForm.PhoneNumberField.value;");
@@ -140,11 +138,7 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("}");
                 out.println("}");
                 
-                out.println("if (parseInt(QuantityOrdered) <= 0) {");
-                    out.println("alert ('Quantity must be a positive nonzero integer.');");
-                    out.println("return false;");
-                out.println("}");
-                out.println("else if (!/^[A-z]+$/.test(FirstName)) {");
+                out.println("if (!/^[A-z]+$/.test(FirstName)) {");
                     out.println("alert ('No numbers allowed in First Name field');");
                     out.println("return false;");
                 out.println("}");
