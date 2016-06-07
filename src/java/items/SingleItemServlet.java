@@ -161,18 +161,6 @@ public class SingleItemServlet extends HttpServlet {
             out.println("<p id=\"aa\">Number of Current Viewrs:"  + sessionCount +  "</p>");
             out.println("</div>");
             
-                        out.println("<div>");
-            
-            out.println("<form method=\"get\" action=\"DisplayOrderServlet\">");
-            out.println("<button id=\"aa\" type=\"submit\">Check Out Cart</button>");
-            out.println("</form>");
-            
-            out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
-            out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
-            out.println("<button id=\"aa\" type=\"submit\" >Add to Cart</button>");
-            out.println("</form>");
-
-            out.println("</div>");
             
             // item desc.            
             out.println("<img id=\"image\" src=\"img/hats/" + image + "\" alt =\"" + name + "\"/>");
@@ -192,13 +180,19 @@ public class SingleItemServlet extends HttpServlet {
             out.println("</div>");
             
    
-                     
+            // forms
+            out.println("<div>");            
+            out.println("<form method=\"get\" action=\"DisplayOrderServlet\">");
+            out.println("<button id=\"aa\" type=\"submit\">Check Out Cart</button>");
+            out.println("</form>");
             
-            
+            out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
+            out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
+            out.println("<button id=\"aa\" type=\"submit\" >Add to Cart</button>");
+            out.println("</form>");
 
-            
-            
-            
+            out.println("</div>");  
+
             // FOOTER
             out.println("<div id=\"footer\">");
             out.println("Copyright © HatSpace.com");

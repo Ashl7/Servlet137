@@ -75,3 +75,8 @@ p {
     float: none;
 }
 
+#aa {
+    display: inline-block;
+    float: right;
+    text-align: right;
+}
