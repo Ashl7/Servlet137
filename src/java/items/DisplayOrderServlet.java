@@ -110,7 +110,7 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
             out.println("<title>Check Out Page</title>");
             
-            //Javascript Section
+            
             
             //Javascript function for mouseover image enlargement
             out.println("<script type='text/javascript'>");
@@ -186,6 +186,8 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("</head>");
             
             out.println("<body>");
+            
+            out.println("<p style=\"font-size:160%;\">Cart Contents</p>");
             
             out.println("<table id=\"cartcontent\">");
             //grabbing the cart object through session object
@@ -339,12 +341,15 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("</tr>");
                     total_price += (hatArray.get(11).getPrice() * quantity);
                 }
-                out.println("<tr>");
-                out.println("<p> Total Price in Cart: " + total_price.toString() + "</p>");
-                out.println("</tr>");
+                
                 
             }
-            out.println("</table>");    
+            out.println("<tr>");
+            out.println("<p> Total Price in Cart: " + total_price.toString() + "</p>");
+            out.println("</tr>");
+            out.println("</table>");   
+            
+            out.println("<p style=\"font-size:120%;\">Shipping Information</p>");
             
             //form here
             out.println("<div id ='form'>");
@@ -461,6 +466,7 @@ public class DisplayOrderServlet extends HttpServlet {
             out.println("</form>");
             out.println("</div>");
             out.println("</body>");
+            out.println("</html>");
         }
     }
 

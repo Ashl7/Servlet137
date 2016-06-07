@@ -75,19 +75,46 @@ public class SubmitOrderServlet extends HttpServlet {
         
         
         //try to submit the order info into database
-        String firstname = request.getParameter("FirstNameField").trim();
-        String lastname = request.getParameter("LastNameField").trim();
-        String phonenumber = request.getParameter("PhoneNumberField").trim();
-        String streetaddress = request.getParameter("ShippingAddressField").trim();
-        String city = request.getParameter("CityField").trim();
-        String state = request.getParameter("StateField").trim();
-        String zipcode = request.getParameter("ZipCodeField").trim();
-        String ccnumber = request.getParameter("CreditCardNumberField").trim();
-        String ccname = request.getParameter("CreditCardNameField").trim();
-        String expmonth = request.getParameter("ExpMonthField").trim();
-        String expyear = request.getParameter("ExpYearField").trim();
-        String shippingmethod = request.getParameter("Shipping").trim();
-        String email = request.getParameter("EmailAddressField").trim();
+        String firstname = request.getParameter("FirstNameField");
+        String lastname = request.getParameter("LastNameField");
+        String phonenumber = request.getParameter("PhoneNumberField");
+        String streetaddress = request.getParameter("ShippingAddressField");
+        String city = request.getParameter("CityField");
+        String state = request.getParameter("StateField");
+        String zipcode = request.getParameter("ZipCodeField");
+        String ccnumber = request.getParameter("CreditCardNumberField");
+        String ccname = request.getParameter("CreditCardNameField");
+        String expmonth = request.getParameter("ExpMonthField");
+        String expyear = request.getParameter("ExpYearField");
+        String shippingmethod = request.getParameter("Shipping");
+        String email = request.getParameter("EmailAddressField");
+        
+        
+        
+        out.println("<!DOCTYPE html>");
+        out.println("<html><head>");
+        out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+        out.println("<title>Submission Page</title>");
+        out.println("</head>");
+        out.println("<body>"); 
+        out.println("<h2> firstname = " + firstname + "<br/>");
+        out.println("lastname = " + lastname + "<br/>");
+        out.println("phonenumber = " + phonenumber + "<br/>");
+        out.println("streetaddress = " + streetaddress + "<br/>");
+        out.println("city = " + city + "<br/>");
+        out.println("state = " + state + "<br/>");
+        out.println("zipcode = " + zipcode + "<br/>");
+        out.println("ccnumber = " + ccnumber + "<br/>");
+        out.println("ccname = " + ccname + "<br/>");
+        out.println("expmonth = " + expmonth + "<br/>");
+        out.println("expyear = " + expyear + "<br/>");
+        out.println("shippingmethod = " + shippingmethod + "<br/>");
+        out.println("email = " + email + "</h2>");
+        
+        Connection connection = null;
+        //PreparedStatement stmt = null;
+        Statement stmt = null; 
+        ResultSet rs = null;
         
         
         try {
@@ -95,42 +122,55 @@ public class SubmitOrderServlet extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");             
             
             //Open a connection
-            Connection connection = DriverManager.getConnection(url,username,password);       
-            
+            connection = DriverManager.getConnection(url,username,password);       
+            stmt = connection.createStatement();
             // Execute a query
+            String sqlOrder = "INSERT INTO orders(first_name, last_name, phone, address, city, state, zip, card, name_on_card, month, year, shipping, email) VALUES('"
+                    + firstname + "', '" + lastname + "', '" + phonenumber + "', '" + streetaddress + "', '" + city + "', '" + state + "', '" + zipcode + "', '" + ccnumber 
+                    + "', '" + ccname + "', '" + expmonth + "', '" + expyear + "', '" + shippingmethod + "', '" + email + "')";
             
             
-            String sqlOrder = "INSERT INTO orders(first_name, last_name, phone, address, city, state, zip, card, name_on_card, month, year, shipping, email) VALUES("
-                    + firstname + ", " + lastname + ", " + phonenumber + ", " + streetaddress + ", " + city + ", " + state + ", " + zipcode + ", " + ccnumber 
-                    + ", " + ccname + ", " + expmonth + ", " + expyear + ", " + shippingmethod + ", " + email + ")";
+            //String sqlOrder = "INSERT INTO orders(first_name, last_name, phone, address, city, state, zip, card, name_on_card, month, year, shipping, email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            out.println("<p> Insert into orders: " + sqlOrder + "</p>");
             
-            PreparedStatement statement = connection.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+            stmt.executeUpdate(sqlOrder);
             
-            statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            resultSet.next();
-            Integer orderID = resultSet.getInt(1);
-            session.setAttribute("OrderID", orderID);
-            String sqlOrder2;
+            
+            out.println("<p> orders insert executed</p>");
+            String sqlQuery = "SELECT LAST_INSERT_ID()";
+            rs = stmt.executeQuery(sqlQuery);
+            rs.next();
+            Integer orderid = rs.getInt(1);
             for (Map.Entry<Integer, Integer> entry : usable.entrySet()) {
-                sqlOrder2 = "INSERT INTO item_in_cart(hatID, amount, orderID) VALUES("
-                        + entry.getKey().toString() + ", " + entry.getValue().toString() + ", "
-                        + orderID.toString() + ")";
+                sqlOrder = "INSERT INTO items_in_cart(hatID, amount, orderID) VALUES("
+                        + entry.getKey() + ", " + entry.getValue() + ", " + orderid + ")";
                 
-                statement.executeUpdate(sqlOrder2);
-    }
-            resultSet.close();
-            statement.close();
+                out.println("<p> Insert into items in cart: " + sqlOrder + "</p>");
+                stmt.executeUpdate(sqlOrder);
+                
+                out.println("<p> individual item insert executed</p>");
+            }
+            
+            session.setAttribute("OrderID", orderid.toString());
+            
+            rs.close();
+            stmt.close();
             connection.close();  
+            
         }        
         catch(Exception e) {
-            e.printStackTrace();
+            out.println("<p> " + e.getMessage() + "</p>");
 
         }
+        out.println("</body>");  
+        out.println("</html>");
         
         
-        RequestDispatcher rs = request.getRequestDispatcher("confirmation.jsp");
-        rs.forward(request, response);
+        response.sendRedirect("/e-commerce_servlet/confirmation.jsp");
+        
+        
+        //RequestDispatcher rs = request.getRequestDispatcher("/confirmation.jsp");
+        //rs.forward(request, response);
         
         
     }

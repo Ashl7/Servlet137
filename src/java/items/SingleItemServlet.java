@@ -177,17 +177,14 @@ public class SingleItemServlet extends HttpServlet {
                      
             
             
-            // Check out 
-            out.println("<div>");
-            out.println("<form method=\"get\" action=\"SubmitOrderServlet\">");
-            out.println("<button type=\"submit\">Check Out Cart</button>");
-            out.println("</form>");
+            
             
             out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
             out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
             out.println("<button type=\"submit\" >Add to Cart</button>");
             out.println("</form>");
-            out.println("<form method=\"get\" action=\"SubmitOrderServlet\">");
+            
+            out.println("<form method=\"get\" action=\"DisplayOrderServlet\">");
             out.println("<button type=\"submit\">Check Out Cart</button>");
             out.println("</form>");
             out.println("</body>");
