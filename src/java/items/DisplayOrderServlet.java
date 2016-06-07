@@ -460,7 +460,7 @@ public class DisplayOrderServlet extends HttpServlet {
                     out.println("<input type='radio' name='Shipping' value='6 Days Ground' />6 Days Ground<br />");
                 out.println("</div>");
                 out.println("<div class='left'>");
-                    out.println("<input type='submit' value='Submit Email' /><input type=\"reset\" value=\"Reset!\">");
+                    out.println("<input type='submit' value='Submit Order' /><input type=\"reset\" value=\"Reset!\">");
                 out.println("</div>");
                 
             out.println("</form>");

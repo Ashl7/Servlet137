@@ -30,3 +30,9 @@ a {
     text-decoration: none;
     cursor: auto;
 }
+
+#aa {
+    display: inline-block;
+    float: right;
+    text-align: right;
+}

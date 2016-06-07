@@ -156,11 +156,28 @@ public class SingleItemServlet extends HttpServlet {
             
             
             // counters
-            out.println("<p>Hit count: " + hitCount + "</p>");
-            out.println("<p>Number of Viewrs: " + sessionCount + "</p>");
+            out.println("<div>");
+            out.println("<p id=\"aa\">Hit count: " + count + "</p>");
+            out.println("<p id=\"aa\">Number of Current Viewrs:"  + sessionCount +  "</p>");
+            out.println("</div>");
             
-            // item desc.
-            out.println("<img src=\"img/hats/" + image + "\" alt =\"" + name + "\"/>");
+                        out.println("<div>");
+            
+            out.println("<form method=\"get\" action=\"DisplayOrderServlet\">");
+            out.println("<button id=\"aa\" type=\"submit\">Check Out Cart</button>");
+            out.println("</form>");
+            
+            out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
+            out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
+            out.println("<button id=\"aa\" type=\"submit\" >Add to Cart</button>");
+            out.println("</form>");
+
+            out.println("</div>");
+            
+            // item desc.            
+            out.println("<img id=\"image\" src=\"img/hats/" + image + "\" alt =\"" + name + "\"/>");
+            
+            
             out.println("<div>");
             out.println("<ul>");
             out.println("<li>Name: "+name + "</li>");
@@ -169,33 +186,26 @@ public class SingleItemServlet extends HttpServlet {
             out.println("<li>Price:"+ price +"</li>");
             out.println(" </ul>");
             out.println("</div>");
+            
             out.println("<div class =\"description\">");
             out.println(description);
             out.println("</div>");
-            out.println("</div>");
+            
    
                      
             
             
+
             
-            
-            out.println("<form name=\"AddToCart\" action=AddToCart method=\"get\">");
-            out.println("<input type=\"hidden\" name=\"clicked_button\" id=\"clicked_button\" value=\"" + id +"\"/>");
-            out.println("<button type=\"submit\" >Add to Cart</button>");
-            out.println("</form>");
-            
-            out.println("<form method=\"get\" action=\"DisplayOrderServlet\">");
-            out.println("<button type=\"submit\">Check Out Cart</button>");
-            out.println("</form>");
-            out.println("</body>");
-            out.println("</html>");
-            out.println("</div>");
             
             
             // FOOTER
             out.println("<div id=\"footer\">");
             out.println("Copyright © HatSpace.com");
             out.println("</div> ");
+            
+            out.println("</body>");
+            out.println("</html>");
         }
 
     }

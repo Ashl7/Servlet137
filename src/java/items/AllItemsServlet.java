@@ -150,7 +150,7 @@ public class AllItemsServlet extends HttpServlet {
             
             
             out.println("<form method=\"get\" action=\"DisplayOrderServlet\">");
-            out.println("<button type=\"submit\">Check Out Cart</button>");
+            out.println("<button id=\"aa\" type=\"submit\">Check Out Cart</button>");
             out.println("</form>");
             
             // ITEMS
